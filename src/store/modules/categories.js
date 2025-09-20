@@ -12,17 +12,9 @@ export const useCategoryStore = defineStore('categories', {
     async fetchCategories() {
       this.loading = true
       try {
-        // 模拟API调用
-        // const response = await api.categories.getAll()
-        // this.categories = response.data
+        const response = await api.categories.getAll()
+        this.categories = response.data.data
         
-        // 模拟数据
-        this.categories = [
-          { id: 1, name: '课程点评' },
-          { id: 2, name: '食堂外卖' },
-          { id: 3, name: '校园商铺' },
-          { id: 4, name: '教师评价' }
-        ]
         this.error = null
       } catch (error) {
         this.error = error.message || '获取分类失败'

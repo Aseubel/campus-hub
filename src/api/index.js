@@ -39,7 +39,7 @@ api.interceptors.response.use(
         swal.error(response.data.message)
       }
     } else {
-      if (response.data.message) {
+      if (response.data.message && response.data.message != "操作成功") {
         swal.success(response.data.message)
       }
     }
@@ -119,43 +119,56 @@ export default {
   
   // 分类
   categories: {
-    getAll: () => api.get('/categories'),
+    getAll: () => api.get('/category/all'),
     // 管理员接口
-    create: (data) => api.post('/admin/categories', data),
-    update: (id, data) => api.put(`/admin/categories/${id}`, data),
-    delete: (id) => api.delete(`/admin/categories/${id}`)
+    create: (data) => api.post('/category', data),
+    update: (id, data) => api.put(`/category/${id}`, data),
+    delete: (id) => api.delete(`/category/${id}`)
   },
   
   // 点评项
   items: {
-    getByCategory: (categoryId) => api.get(`/items?categoryId=${categoryId}`),
-    getById: (id) => api.get(`/items/${id}`),
+    getByCategory: (categoryId) => api.get(`/item?categoryId=${categoryId}`),
+    getById: (id) => api.get(`/item/${id}`),
     // 管理员接口
-    getAll: (params) => api.get('/admin/items', { params }),
-    create: (data) => api.post('/admin/items', data),
-    update: (id, data) => api.put(`/admin/items/${id}`, data),
-    delete: (id) => api.delete(`/admin/items/${id}`)
+    getAll: (params) => api.get('/item/all', { params }),
+    create: (data) => api.post('/item', data),
+    update: (id, data) => api.put(`/item/${id}`, data),
+    delete: (id) => api.delete(`/item/${id}`)
   },
   
   // 评论
   reviews: {
-    getByItem: (itemId) => api.get(`/reviews?itemId=${itemId}`),
-    create: (data) => api.post('/reviews', data),
-    update: (id, data) => api.put(`/reviews/${id}`, data),
-    delete: (id) => api.delete(`/reviews/${id}`),
+    getByItem: (itemId) => api.get(`/review?itemId=${itemId}`),
+    create: (data) => api.post('/review', data),
+    update: (id, data) => api.put(`/review/${id}`, data),
+    delete: (id) => api.delete(`/review/${id}`),
     // 管理员接口
-    getAll: (params) => api.get('/admin/reviews', { params }),
-    adminDelete: (id) => api.delete(`/admin/reviews/${id}`)
+    getAll: (params) => api.get('/review/all', { params }),
+    adminDelete: (id) => api.delete(`/review/admin/${id}`)
   },
   
   // 用户管理 (仅管理员)
   users: {
-    getAll: (params) => api.get('/admin/users', { params }),
-    update: (id, data) => api.put(`/admin/users/${id}`, data)
+    getAll: () => api.get('/user/all'),
+    getById: (id) => api.get(`/user/${id}`),
+    create: (data) => api.post('/user', data),
+    update: (id, data) => api.put(`/user/${id}`, data),
+    delete: (id) => api.delete(`/user/${id}`),
+
   },
   
   // 仪表盘数据 (仅管理员)
   dashboard: {
-    getStats: () => api.get('/admin/stats')
+    getStats: () => api.get('/stats')
+  },
+  
+  // 图片
+  images: {
+    upload: (data) => api.post('/common/uploadImage', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }),
   }
 }

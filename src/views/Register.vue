@@ -116,6 +116,13 @@ const validateForm = () => {
     return false
   }
 
+  // 用户名校验：只能包含字母、数字、下划线，长度4-12位
+  const usernameRegex = /^[a-zA-Z0-9_]{4,12}$/
+  if (!usernameRegex.test(formData.value.username)) {
+    error.value = '用户名只能包含字母、数字、下划线，长度4-12位'
+    return false
+  }
+
   if (!validatePhoneNumber(formData.value.phone)) {
     error.value = '请输入有效的手机号'
     return false
@@ -126,8 +133,14 @@ const validateForm = () => {
     return false
   }
 
-  if (formData.value.password.length < 6) {
-    error.value = '密码长度至少6位'
+  if (formData.value.password.length < 8 || formData.value.password.length > 20) {
+    error.value = '密码长度必须在8到20位之间'
+    return false
+  }
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/
+  if (!passwordRegex.test(formData.value.password)) {
+    error.value = '密码必须包含大小写字母和数字'
     return false
   }
 
@@ -151,9 +164,7 @@ const sendVerificationCode = async () => {
   error.value = ''
 
   try {
-    await authStore.sendSmsCode({
-      phone: formData.value.phone
-    })
+    await authStore.sendSmsCode(formData.value.phone)
     console.log('验证码已发送到手机:', formData.value.phone)
     startCountdown() // 成功后开始倒计时
   } catch (err) {
@@ -174,7 +185,9 @@ const handleRegister = async () => {
     const user = await authStore.register({
       username: formData.value.username,
       phone: formData.value.phone,
-      password: formData.value.password
+      password: formData.value.password,
+      confirmPassword: formData.value.confirmPassword,
+      smsCode: formData.value.verificationCode
     })
 
     router.push('/')

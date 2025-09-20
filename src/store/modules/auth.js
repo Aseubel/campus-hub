@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import api from '../../api'
+import api from '@/api'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -43,7 +42,7 @@ export const useAuthStore = defineStore('auth', {
     
     async register(userData) {
       try {
-        const response = await api.auth.register({userData})
+        const response = await api.auth.register(userData)
         
         this.setUser(response.data.data.user)
         this.setAccessToken(response.data.data.accessToken)

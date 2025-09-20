@@ -13,38 +13,51 @@ export const useItemStore = defineStore('items', {
     async fetchItemsByCategory(categoryId) {
       this.loading = true
       try {
-        // 模拟API调用
-        // const response = await api.items.getByCategory(categoryId)
-        // this.items = response.data
+        const response = await api.items.getByCategory(categoryId)
+        this.items = response.data.data
         
         // 模拟数据
-        this.items = [
-          { 
-            id: 101, 
-            categoryId: 1, 
-            name: '高级软件工程', 
-            imageUrl: 'https://picsum.photos/400/300?random=1', 
-            description: '一门深入探讨软件开发生命周期的课程。',
-            metadata: { teacher: '李四教授', credits: 3 }
-          },
-          { 
-            id: 102, 
-            categoryId: 1, 
-            name: '数据结构与算法', 
-            imageUrl: 'https://picsum.photos/400/300?random=2', 
-            description: '计算机科学的基础课程，讲解各种数据结构和算法。',
-            metadata: { teacher: '王五教授', credits: 4 }
-          },
-          { 
-            id: 201, 
-            categoryId: 2, 
-            name: '第一食堂', 
-            imageUrl: 'https://picsum.photos/400/300?random=3', 
-            description: '学校主食堂，提供各种中式快餐。',
-            metadata: { location: '校区中心', openHours: '7:00-20:00' }
-          }
-        ].filter(item => !categoryId || item.categoryId === parseInt(categoryId))
+        // this.items = [
+        //   { 
+        //     id: 101, 
+        //     categoryId: 1, 
+        //     name: '高级软件工程', 
+        //     imageUrl: 'https://picsum.photos/400/300?random=1', 
+        //     description: '一门深入探讨软件开发生命周期的课程。',
+        //     metadata: { teacher: '李四教授', credits: 3 }
+        //   },
+        //   { 
+        //     id: 102, 
+        //     categoryId: 1, 
+        //     name: '数据结构与算法', 
+        //     imageUrl: 'https://picsum.photos/400/300?random=2', 
+        //     description: '计算机科学的基础课程，讲解各种数据结构和算法。',
+        //     metadata: { teacher: '王五教授', credits: 4 }
+        //   },
+        //   { 
+        //     id: 201, 
+        //     categoryId: 2, 
+        //     name: '第一食堂', 
+        //     imageUrl: 'https://picsum.photos/400/300?random=3', 
+        //     description: '学校主食堂，提供各种中式快餐。',
+        //     metadata: { location: '校区中心', openHours: '7:00-20:00' }
+        //   }
+        // ].filter(item => !categoryId || item.categoryId === parseInt(categoryId))
         
+        this.error = null
+      } catch (error) {
+        this.error = error.message || '获取点评项失败'
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async fetchAllItems() {
+      this.loading = true
+      try {
+        const response = await api.items.getAll()
+        this.items = response.data.data
+
         this.error = null
       } catch (error) {
         this.error = error.message || '获取点评项失败'
@@ -56,19 +69,18 @@ export const useItemStore = defineStore('items', {
     async fetchItemById(id) {
       this.loading = true
       try {
-        // 模拟API调用
-        // const response = await api.items.getById(id)
-        // this.currentItem = response.data
+        const response = await api.items.getById(id)
+        this.currentItem = response.data.data
         
         // 模拟数据
-        this.currentItem = this.items.find(item => item.id === parseInt(id)) || {
-          id: parseInt(id),
-          categoryId: 1,
-          name: `点评项 ${id}`,
-          imageUrl: `https://picsum.photos/400/300?random=${id}`,
-          description: '这是一个示例点评项的详细描述。',
-          metadata: { teacher: '示例教授', credits: 3 }
-        }
+        // this.currentItem = this.items.find(item => item.id === parseInt(id)) || {
+        //   id: parseInt(id),
+        //   categoryId: 1,
+        //   name: `点评项 ${id}`,
+        //   imageUrl: `https://picsum.photos/400/300?random=${id}`,
+        //   description: '这是一个示例点评项的详细描述。',
+        //   metadata: { teacher: '示例教授', credits: 3 }
+        // }
         
         this.error = null
       } catch (error) {
